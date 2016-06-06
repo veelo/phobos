@@ -101,8 +101,9 @@ the logger.
 $(H4 Printf Style Logging)
 If $(D printf)-style logging is needed add a $(B f) to the logging call, such as
 $(D myLogger.infof("Hello %s", "world");) or $(D fatalf("errno %d", 1337)).
-The additional $(B f) enables $(D printf)-style logging for call combinations of
-explicit $(D LogLevel) and conditional logging functions and methods.
+The additional $(B f) appended to the function name enables $(D printf)-style
+logging for all combinations of explicit $(D LogLevel) and conditional
+logging functions and methods.
 
 $(H4 Thread Local Redirection)
 Calls to the free standing log functions are not directly forwarded to the
@@ -123,9 +124,9 @@ method.
 -------------
 class MyCustomLogger : Logger
 {
-    this(string newName, LogLevel lv) @safe
+    this(LogLevel lv) @safe
     {
-        super(newName, lv);
+        super(lv);
     }
 
     override void writeLogMsg(ref LogEntry payload)
@@ -134,8 +135,8 @@ class MyCustomLogger : Logger
     }
 }
 
-auto logger = new MyCustomLogger();
-logger.log("Awesome log message");
+auto logger = new MyCustomLogger(LogLevel.info);
+logger.log("Awesome log message with LogLevel.info");
 -------------
 
 To gain more precise control over the logging process, additionally to
